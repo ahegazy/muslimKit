@@ -1,10 +1,30 @@
 # Azkar Json Files
 This directory contains the Azkar in json files, I'll upload every file once i create it   
 
+## Form 
+The json files will be in the form 
+```
+{
+    "title" : "Azkar ... ",
+    "content": [
+        {
+            "zekr": "",
+            "repeat": #,
+            "bless": ""
+        },
+        {},...
+    ]
+}
+```
+#### Where
+"zekr": the saying that one should say  
+"repeat": number of repetition  
+"bless": the bless of the zekr, hadith,quran, etc..
 
-Azkar Al-Sabah "أذكار الصباح" : [json/azkar_sabah.json](json/azkar_sabah.json)  
 
-Azkar Al-Massa "أذكار المساء" : [json/azkar_massa.json](json/azkar_massa.json)  
+## List 
+- Azkar Al-Sabah "أذكار الصباح" : [json/azkar_sabah.json](json/azkar_sabah.json)  
+- Azkar Al-Massa "أذكار المساء" : [json/azkar_massa.json](json/azkar_massa.json)  
 
 
 #### NOTE 
