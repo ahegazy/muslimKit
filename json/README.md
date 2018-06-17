@@ -23,8 +23,8 @@ The json files will be in the form
 
 
 ## List 
-- Azkar Al-Sabah "أذكار الصباح" : [json/azkar_sabah.json](json/azkar_sabah.json)  
-- Azkar Al-Massa "أذكار المساء" : [json/azkar_massa.json](json/azkar_massa.json)  
+- Azkar Al-Sabah "أذكار الصباح" : [azkar_sabah.json](azkar_sabah.json)  
+- Azkar Al-Massa "أذكار المساء" : [azkar_massa.json](azkar_massa.json)  
 
 
 #### NOTE 
