@@ -1,0 +1,11 @@
+@import 'nativescript-theme-core/css/core.light.css';
+
+#update {
+    width: 20%;
+    left: 1%
+}
+
+.list{
+    font-size: 20%;
+
+}
