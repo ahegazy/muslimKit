@@ -1,0 +1,12 @@
+[
+    {
+        "title": "أذكار الصباح",
+        "filename": "azkar_sabah",
+        "url": "https://ahegazy.github.io/muslimKit/json/azkar_sabah.json"
+    },
+    {
+        "title": "أذكار المساء",
+        "filename": "azkar_massa",
+        "url": "https://ahegazy.github.io/muslimKit/json/azkar_massa.json"
+    }
+]

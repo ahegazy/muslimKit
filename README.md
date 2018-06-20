@@ -7,28 +7,39 @@ A mobile [Android/IOS] app that provides muslim with his azkar during the day an
 - Vuex
 - Nativescript-vue
 
-## Build 
-check the documentation in [nativescript-vue.org/](https://nativescript-vue.org/en/docs/getting-started/templates/#nativescript-vuenativescript-vue-template)
+## Usage
+
+1.  Install NativeScript tools (see http://docs.nativescript.org/start/quick-setup)
+
+2.  Install dependencies
 
 ```bash
-//install dependencies
 npm install 
+```
 
-//to run the app in the emulator
-tns run android 
-tns run ios 
+> While the `nativescript-vue` project is not up-to-date on npm, you may have to run
+> `npm link nativescript-vue` in the project folder (like [described here](https://github.com/rigor789/nativescript-vue/blob/master/CONTRIBUTING.md)).
 
-//to build the app 
+3.  Run in Android or iOS
+
+```bash
+tns run android
+tns run ios
+```
+
+4. Build for Android or iOS
+
+```bash
 tns build android
 tns build ios
 ```
 
 ## How it works 
-It checks for available Azkar list at [json/list.json](./json/list.json) and downloads the json files, store it localy and it reads the local files.
+It checks for available Azkar list at [docs/json/list.json](./json/list.json) and downloads the json files, store it localy and it reads the local files.
 
 ## JSON 
-[json](./json) directory contains the Azkar in json files, I'll upload every file once i create it.      
-you can find a list of available azkar files in [json/README.md#list](json/README.md#list)  
+[json](docs/json) directory contains the Azkar in json files, I'll upload every file once i create it.      
+you can find a list of available azkar files in [docs/json/README.md#list](json/README.md#list)  
 
 
 ## Wanna help ? 
