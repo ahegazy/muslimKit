@@ -7,10 +7,16 @@ module.exports = {
     checklocalStorage: function({commit,dispatch}) {
             let data = this.getters.getData
                 for (let i=0;i<data.list.length;i++){
-                    dispatch('getFile',{
+                    return new Promise((resolve, reject) => {
+                        dispatch('getFile',{
                         fname: data.list[i].filename,
                         url : data.list[i].url
+                    }).then((res)=>{
+                        resolve(res)
+                    }).catch((err) => {
+                        reject(err)
                     })
+                })
                 }
                 
             },
@@ -19,58 +25,94 @@ module.exports = {
                     let path = fileSystem.path.join(Azkar.path, 'list.json');
                     let exists = fileSystem.File.exists(path);
                     if(!exists){
-                        dispatch('updateList');
-                        //.then(()=>{return});
+                        return new Promise((resolve, reject) => {
+                            dispatch('updateList').then((res)=>{
+                                resolve(res)
+                            }).catch((err) => {
+                                reject(err)
+                            });
+                        });
                     }else{
-                        dispatch('readFile',{
-                            fname: 'list'
+                        return new Promise((resolve, reject) => {
+                            dispatch('readFile',{
+                                fname: 'list'
+                            }).then((res)=>{
+                                resolve(res)
+                            }).catch((err) => {
+                                reject(err)
+                            })
                         })
                     }
                 }
             },
             updateList: function({commit,dispatch}){ //force update the list from the internet even if it exists .. 
-                dispatch('getFile',{
-                    fname: 'list',
-                    url : 'https://raw.githubusercontent.com/ahegazy/muslimKit/master/json/list.json'
-                }).then(()=>{
-                    dispatch('checklocalStorage');
+                return new Promise((resolve, reject) => {
+                    dispatch('getFile',{
+                        fname: 'list',
+                        url : 'https://ahegazy.github.io/muslimKit/json/list.json'
+                    }).then(()=>{
+                        dispatch('checklocalStorage').then((res)=>{
+                            resolve(res)
+                        }).catch((err) => {
+                            reject(err)
+                        });
+                    }).catch((err) => {
+                        reject(err)
+                    })
                 })
+                
+                
             },updateData: function({commit,dispatch},payload){
                 fname = payload.fname;
                 url = payload.url
-    
+
                     let path = fileSystem.path.join(Azkar.path, fname + '.json');
                     let exists = fileSystem.File.exists(path);
         
                     if(!exists){
-                        dispatch('getFile',{
+                        return new Promise((resolve, reject) => {
+                            dispatch('getFile',{
                             fname:  fname,
                             url : url
+                        }).then((res)=>{
+                            resolve(res)
+                        }).catch((err) => {
+                            reject(err)
                         })
+                    })
                     }else {
-                        dispatch('readFile',{
-                            fname: fname
+                        return new Promise((resolve, reject) => {
+                            dispatch('readFile',{
+                                fname: fname
+                            }).then((res)=>{
+                                resolve(res)
+                            }).catch((err) => {
+                                reject(err)
+                            })
                         })
                     }
             },
             getFile: function({commit,dispatch},payload){
                 let fname = payload.fname;
                 let url = payload.url;
-                
-                httpModule.getJSON(url).then((response) => {
-                    dispatch('saveFile',{
-                        fname: fname,
-                        data: response
+                return new Promise((resolve, reject) => {
+                    httpModule.getJSON(url).then((response) => {
+                        dispatch('saveFile',{
+                            fname: fname,
+                            data: response
+                        }).catch((err) => {
+                            reject(err)
+                        })
+                        commit('updateVar', {
+                            var: fname,
+                            data : response
+                        })     
+                        resolve('got file from internet')
+                    }, (err) => {
+                            console.log('No internet connection ' + err);
+                            reject('Error in getting file from the internet, please allow this app to use internet and try again/')
+                        });   
                     })
-                    commit('updateVar', {
-                        var: fname,
-                        data : response
-                    })     
-                }, (e) => {
-                    console.log('err')
-                    alert('No internet connection ' + e);
-                });   
-        
             },
             saveFile: function({commit},payload){
                 let fname = payload.fname;
@@ -78,31 +120,37 @@ module.exports = {
 
                 const path = fileSystem.path.join(Azkar.path, fname + '.json');
                 const file = fileSystem.File.fromPath(path);
-
-                file.writeText(JSON.stringify(data))
-                    .then((result) => {
-                    /*    this.dispatch('readFile',{
-                            fname: fname
-                        })*/
-                        console.log('Done writing data');
-                    }).catch((err) => {
-                        console.log(err);
-                    });
+                return new Promise((resolve, reject) => {
+                    file.writeText(JSON.stringify(data))
+                        .then((result) => {
+                            resolve('Done writing data')
+                            console.log('Done writing data');
+                        }).catch((err) => {
+                            console.log('Error in saving file: ' + err);
+                            reject('Error saving file: ' + err)
+                        });
+                })
             },
             readFile: function({commit},payload){
                 let fname = payload.fname;
 
                 const file = Azkar.getFile(fname + '.json');
                 let data;
-                file.readText()
-                .then((response) => {
-                    console.log('file read success');
-                    data = JSON.parse(response); 
-                    commit('updateVar', {
-                        var: fname,
-                        data : data
-                    })                    
-                });
+                return new Promise((resolve, reject) => {
+                    file.readText()
+                    .then((response) => {
+                        console.log('file read success');
+                        data = JSON.parse(response); 
+                        commit('updateVar', {
+                            var: fname,
+                            data : data
+                        })
+                        resolve('file read success')
+                    }).catch((err) => {
+                        console.log('Error in reading file: ' + err.stack);
+                        reject('Error reading file: ' + err.stack)
+                    });
+                })
             },
             navigate: function({commit},payload){
                 let to = payload.to;

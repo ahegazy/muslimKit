@@ -12,7 +12,7 @@ module.exports = {
   <StackLayout orientation="vertical">
     <GridLayout :rows="isLoading ? '*' : '0'">
       <ActivityIndicator busy="true" />
-      <Label text="Loading ....." />
+      <Label text="Getting data ....." />
     </GridLayout>
     <ListView for="item in data.list" row="1" colSpan="1">
       <v-template>  
@@ -31,14 +31,17 @@ module.exports = {
          this.isLoading = false;
         })
       .catch(err => {
-        console.log("failed", err);
+        this.isLoading = false
+        alert(err)
       });
     },
     navigate: function(item){
+      this.isLoading = true
       this.$store.dispatch('updateData',{
         fname : item.filename,
         url : item.url
       }).then(()=>{
+        this.isLoading = false
         this.$navigateTo(viewAzkar,{
           context: {
               propsData: { 
@@ -47,6 +50,9 @@ module.exports = {
               }
           }
         });
+      }).catch((err) => {
+        this.isLoading = false
+        alert(err)
       })
     },
     updateList: function(){
@@ -54,7 +60,11 @@ module.exports = {
       this.$store.dispatch('updateList').then(()=>{
         this.isLoading = false;
         alert('updated');
-      })
+      }).catch(err => {
+        this.isLoading = false;
+        alert(err)
+      });
+
     }
 
   },
