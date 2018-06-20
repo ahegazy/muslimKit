@@ -38,7 +38,7 @@ tns build ios
 It checks for available Azkar list at [list.json](../docs/json/list.json) and downloads the json files, store it localy and it reads the local files.
 
 ## JSON 
-[json](docs/json) directory contains the Azkar in json files, I'll upload every file once i create it.      
+[json](../docs/json) directory contains the Azkar in json files, I'll upload every file once i create it.      
 you can find a list of available azkar files in [README.md#list](../docs/json/README.md#list)  
 
 

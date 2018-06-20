@@ -1,15 +1,17 @@
 const viewAzkar = require('./viewAzkar');
+const Counter = require('./Counter');
 const Vue = require('nativescript-vue');
 
 module.exports = {
   data() {
     return {
- //       data: {},
-        isLoading: false
+      Counter : Counter,
+      isLoading: false
     };
   },
   template: `
   <StackLayout orientation="vertical">
+  <Button id="update" @tap="$navigateTo(Counter)" text="Tasbeeh" class="btn btn-outline"/>
     <GridLayout :rows="isLoading ? '*' : '0'">
       <ActivityIndicator busy="true" />
       <Label text="Getting data ....." />

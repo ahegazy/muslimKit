@@ -9,7 +9,7 @@ module.exports = {
   template: `
 <Page>
   <ActionBar :title="Azkar.title"/>
-  <StackLayout orientation="vertical">
+  <StackLayout orientation="vertical" class="stack">
     <Button id="update" @tap="resetRep" text="reset" class="btn btn-outline"/>
     <GridLayout>
       <ListView for="zekr in Azkar.content" @itemTap="countRep" row="1" colSpan="1">
