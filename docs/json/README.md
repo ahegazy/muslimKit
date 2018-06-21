@@ -25,7 +25,7 @@ The json files will be in the form
 ## List 
 - Azkar Al-Sabah "أذكار الصباح" : [azkar_sabah.json](azkar_sabah.json)  
 - Azkar Al-Massa "أذكار المساء" : [azkar_massa.json](azkar_massa.json)  
-
+- Post Prayer Azkar "أذكار بعد الصلاة" : [PostPrayer_azkar.json](PostPrayer_azkar.json)
 
 #### NOTE 
 The Azkar are fetched from different sources mainly islambook.com

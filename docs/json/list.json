@@ -8,5 +8,10 @@
         "title": "أذكار المساء",
         "filename": "azkar_massa",
         "url": "https://ahegazy.github.io/muslimKit/json/azkar_massa.json"
+    },
+    {
+        "title": "أذكار بعد الصلاة",
+        "filename": "postPrayer_azkar",
+        "url": "https://ahegazy.github.io/muslimKit/json/PostPrayer_azkar.json"
     }
 ]
