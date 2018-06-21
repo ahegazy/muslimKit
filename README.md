@@ -1,6 +1,6 @@
 # muslimKit
 Muslim kit project ..  
-A mobile [Android/IOS] app that provides muslim with his azkar during the day and A json source for the Azkar ..
+A mobile [Android/IOS] app that provides muslim with his azkar and prayer times during the day  and A json source for the Azkar ..
 
 ## Stack 
 - Vuejs 

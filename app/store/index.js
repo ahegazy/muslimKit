@@ -10,7 +10,8 @@ const getters = require('./getters');
 module.exports = new Vuex.Store({
   state: {
     isLoading: false,
-    data: {}
+    data: {},
+    PrayerTimes: {}
     },
   mutations,
   actions,

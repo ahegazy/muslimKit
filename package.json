@@ -1,5 +1,5 @@
 {
-	"description": "NativeScript Application",
+	"description": "A mobile [Android/IOS] app that provides muslim with his azkar and prayer times during the day.",
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"readme": "NativeScript Application",
 	"repository": "<fill-your-repository-here>",
@@ -10,6 +10,7 @@
 		}
 	},
 	"dependencies": {
+		"nativescript-geolocation": "^4.2.6",
 		"nativescript-theme-core": "^1.0.4",
 		"nativescript-vue": "^1.3.1",
 		"tns-core-modules": "^3.4.1",

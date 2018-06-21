@@ -8,12 +8,11 @@ module.exports = {
   },
   template: `
     <Page class="page" >
-  <ActionBar class="action-bar" title="Muslim Kit"/>
-
+    <ActionBar class="action-bar" title="Muslim Kit"/>
         <AzkarMain />
     </Page>
   `,
   components: {
-    AzkarMain,
+    AzkarMain
   },
 };

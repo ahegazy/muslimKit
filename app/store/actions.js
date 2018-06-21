@@ -1,23 +1,29 @@
 const Vue = require('nativescript-vue');
 const httpModule = require("http");
 const fileSystem = require("tns-core-modules/file-system");
+const geoLocation = require('nativescript-geolocation');
 const Azkar = fileSystem.knownFolders.currentApp().getFolder('Azkar');
+const date = new Date();
 
 module.exports = {
     checklocalStorage: function({commit,dispatch}) {
             let data = this.getters.getData
+            return new Promise((resolve, reject) => {
                 for (let i=0;i<data.list.length;i++){
-                    return new Promise((resolve, reject) => {
                         dispatch('getFile',{
                         fname: data.list[i].filename,
                         url : data.list[i].url
                     }).then((res)=>{
-                        resolve(res)
+                        commit('updateVar', {
+                            var: data.list[i].filename,
+                            data : res
+                        })
                     }).catch((err) => {
                         reject(err)
                     })
-                })
                 }
+                resolve('local files updated')
+                })
                 
             },
             getList: function({commit,dispatch}){
@@ -37,7 +43,11 @@ module.exports = {
                             dispatch('readFile',{
                                 fname: 'list'
                             }).then((res)=>{
-                                resolve(res)
+                                commit('updateVar', {
+                                    var: 'list',
+                                    data : res
+                                })        
+                                resolve('Success: reading datafully')
                             }).catch((err) => {
                                 reject(err)
                             })
@@ -50,9 +60,13 @@ module.exports = {
                     dispatch('getFile',{
                         fname: 'list',
                         url : 'https://ahegazy.github.io/muslimKit/json/list.json'
-                    }).then(()=>{
+                    }).then((res)=>{
+                        commit('updateVar', {
+                            var: 'list',
+                            data : res
+                        })
                         dispatch('checklocalStorage').then((res)=>{
-                            resolve(res)
+                            resolve('list updated')
                         }).catch((err) => {
                             reject(err)
                         });
@@ -75,7 +89,11 @@ module.exports = {
                             fname:  fname,
                             url : url
                         }).then((res)=>{
-                            resolve(res)
+                            commit('updateVar', {
+                                var: fname,
+                                data : res
+                            })
+                            resolve(fname + ' updated')    
                         }).catch((err) => {
                             reject(err)
                         })
@@ -85,7 +103,11 @@ module.exports = {
                             dispatch('readFile',{
                                 fname: fname
                             }).then((res)=>{
-                                resolve(res)
+                                commit('updateVar', {
+                                    var: fname,
+                                    data : res
+                                })        
+                                resolve('Success: reading datafully')
                             }).catch((err) => {
                                 reject(err)
                             })
@@ -96,21 +118,17 @@ module.exports = {
                 let fname = payload.fname;
                 let url = payload.url;
                 return new Promise((resolve, reject) => {
-                    httpModule.getJSON(url).then((response) => {
+                    httpModule.getJSON(url).then((res) => {
                         dispatch('saveFile',{
                             fname: fname,
-                            data: response
+                            data: res
                         }).catch((err) => {
                             reject(err)
                         })
-                        commit('updateVar', {
-                            var: fname,
-                            data : response
-                        })     
-                        resolve('got file from internet')
+                        resolve(res)
                     }, (err) => {
                             console.log('No internet connection ' + err);
-                            reject('Error in getting file from the internet, please allow this app to use internet and try again/')
+                            reject('Error in connecting to the internet, please allow this app to use internet and try again.')
                         });   
                     })
             },
@@ -123,8 +141,8 @@ module.exports = {
                 return new Promise((resolve, reject) => {
                     file.writeText(JSON.stringify(data))
                         .then((result) => {
-                            resolve('Done writing data')
-                            console.log('Done writing data');
+                            resolve('Success: writing data')
+                            console.log('Success: writing data');
                         }).catch((err) => {
                             console.log('Error in saving file: ' + err);
                             reject('Error saving file: ' + err)
@@ -139,18 +157,137 @@ module.exports = {
                 return new Promise((resolve, reject) => {
                     file.readText()
                     .then((response) => {
-                        console.log('file read success');
+                        console.log('Success: reading data');
                         data = JSON.parse(response); 
-                        commit('updateVar', {
-                            var: fname,
-                            data : data
-                        })
-                        resolve('file read success')
+                        resolve(data);
                     }).catch((err) => {
                         console.log('Error in reading file: ' + err.stack);
                         reject('Error reading file: ' + err.stack)
                     });
                 })
+            },getCurrentLocation: function({commit,dispatch},payload){
+                return new Promise((resolve, reject) => {
+                    dispatch('geoLocationisEnabled').then(()=>{
+                        geoLocation.getCurrentLocation({desiredAccuracy: 3, updateDistance: 10, maximumAge: 20000, timeout: 20000}).
+                        then(function(loc) {
+                            if (loc) {
+                                resolve(loc);
+                            }else{
+                                reject('Error in getting location');
+                            }
+                        }, function(e){
+                            reject('Error in getting location: ' + e.message);
+                            console.log("Error: " + e.message);
+                        });
+                    }).catch((e) => {
+                        reject(e);
+                    })
+                });
+            },geoLocationisEnabled: function({commit,dispatch},payload){
+                return new Promise((resolve, reject) => {
+                        geoLocation.isEnabled().then(function (isEnabled) {
+                            if (!isEnabled) {
+                                geoLocation.enableLocationRequest().then(function (res) {
+                                    resolve(res)
+                                }, function (e) {
+                                    console.log("Error: " + (e.message || e));
+                                    reject("Error: " + (e.message || e))
+                                });
+                            }else {
+                                resolve('Location is enabled')
+                            }         
+                    }, function (e) {
+                        console.log("Error: " + (e.message || e));
+                        reject("Error: " + (e.message || e))
+                    });
+                });
+            },updatePrayerTime({commit,dispatch},payload){
+                let month = date.getMonth() + 1;
+                let year = date.getFullYear();
+                return new Promise((resolve, reject) => {
+                    dispatch('getCurrentLocation').then((res)=>{
+                        let location = res
+                        dispatch('getFile',{
+                            url: 'http://api.aladhan.com/v1/calendar?latitude='+location.latitude+'&longitude='+location.longitude+'&&method=5&month='+month+'&year='+year, 
+                            fname: 'prayerTimes'
+                        }).then((res) => {
+                            dispatch('getTodayPrayers',{
+                                data : res.data
+                            }).then(()=>{
+                                resolve('Prayers Time Updated')
+                            }).catch((err)=>{
+                                reject(err)
+                            })
+                        }).catch((err) => {
+                            reject(err)
+                        });
+                    }).catch((err)=>{
+                        reject(err)
+                    })
+                });
+            },
+            getPrayerTimes:  function({commit,dispatch},payload){
+                if(!this.state.data.hasOwnProperty('prayerTimes')){    
+                    let path = fileSystem.path.join(Azkar.path, 'prayerTimes.json');
+                    let exists = fileSystem.File.exists(path);
+                    if(!exists){
+                        return new Promise((resolve, reject) => {
+                            dispatch('updatePrayerTime').then((res) => {
+                                resolve(res)
+                            }).catch((err) => {
+                                reject(err)
+                            });    
+                        });
+                    }else{
+                        return new Promise((resolve, reject) => {
+                            dispatch('readFile',{
+                                fname: 'prayerTimes'
+                            }).then((res)=>{
+                                dispatch('getTodayPrayers',{
+                                    data : res.data
+                                }).then(()=>{
+                                    resolve('Prayer Time Updated')
+                                }).catch((err)=>{
+                                    reject(err)
+                                })
+                                resolve('Prayer Time Updated')
+                            }).catch((err) => {
+                                reject(err)
+                            })
+                        })
+                    }
+                }
+            },
+            getTodayPrayers: function({commit,dispatch},payload){
+                let data = payload.data;
+                let PrayingTimes = {};
+                var dd = date.getDate();
+                var mm = date.getMonth()+1;
+                var yyyy = date.getFullYear();
+                if(dd<10){
+                    dd='0'+dd;
+                } 
+                if(mm<10){
+                    mm='0'+mm;
+                }
+
+                if(data[0].date.gregorian.date.split("-")[1] === mm){
+                    let CurrentDate = dd + '-' + mm + '-' + yyyy
+                    for(let i = 0;i<data.length;i++){
+                        if(data[i].date.gregorian.date === CurrentDate){
+                            PrayingTimes = data[i];
+                        }
+                    }
+                    commit('updatePrayerTimes', {
+                        data : PrayingTimes
+                    })
+                }else {
+                    dispatch('updatePrayerTime').then((res)=>{                    
+                        resolve(res)
+                    }).catch((err)=>{
+                        reject(err)
+                    })
+                }
             },
             navigate: function({commit},payload){
                 let to = payload.to;
