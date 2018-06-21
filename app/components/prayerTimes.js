@@ -2,10 +2,7 @@
 module.exports = {
     data() {
         return {
-            timezone: '',
-            timings: {},
             isLoading: false,
-            today: ''
         }
     },
     template: `
@@ -48,9 +45,6 @@ module.exports = {
             this.$store
             .dispatch("getPrayerTimes")
             .then(() => {
-                let data = this.PrayerTimes;
-                this.timings = data.timings;
-                this.today = data.date.gregorian.weekday.en + ' ' + data.date.readable + ' | ' + data.date.hijri.weekday.ar +' '+ data.date.hijri.day + ' ' + data.date.hijri.month.ar + ' ' + data.date.hijri.year;
                 this.isLoading = false;
               })
             .catch(err => {
@@ -61,9 +55,6 @@ module.exports = {
           updatePrayerTime(){
             this.isLoading = true;
             this.$store.dispatch('updatePrayerTime').then((res) => {
-                let data = this.PrayerTimes;
-                this.timings = data.timings;
-                this.today = data.date.readable;
                 this.isLoading = false;
                 alert(res)
             }).catch((err) => {
@@ -77,8 +68,13 @@ module.exports = {
         this.getPrayersTime();
     },
     computed:{
-        PrayerTimes: function(){
-          return this.$store.getters.getPrayerTimes;
+        timings: function(){
+            let data = this.$store.getters.getPrayerTimes;
+            return (Object.keys(this.$store.getters.getPrayerTimes).length != 0) ? data.timings : {};
+        },
+        today: function(){
+            let data = this.$store.getters.getPrayerTimes;
+            return (Object.keys(this.$store.getters.getPrayerTimes).length != 0) ? data.date.gregorian.weekday.en + ' ' + data.date.readable + ' | ' + data.date.hijri.weekday.ar +' '+ data.date.hijri.day + ' ' + data.date.hijri.month.ar + ' ' + data.date.hijri.year : '';
         }
       },
 }
