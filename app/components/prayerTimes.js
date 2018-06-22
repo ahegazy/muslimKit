@@ -3,6 +3,8 @@ module.exports = {
     data() {
         return {
             isLoading: false,
+            methods : ['University of Islamic Sciences, Karachi','Islamic Society of North America','Muslim World League','Umm Al-Qura University, Makkah','Egyptian General Authority of Survey','Institute of Geophysics, University of Tehran','Gulf Region','Kuwait','Qatar','Majlis Ugama Islam Singapura, Singapore','Union Organization islamic de France','Diyanet İşleri Başkanlığı, Turkey' ],
+            chMethod: 4
         }
     },
     template: `
@@ -13,7 +15,11 @@ module.exports = {
             <ActivityIndicator busy="true" />
             <Label text="Getting data ....." />
         </GridLayout>  
+        <Label text=""/>
+        <Label text="Method of calculation:"/>
+        <ListPicker :items="methods" v-model="chMethod" />
         <Button @tap="updatePrayerTime" text="update prayer times" class="btn btn-outline"/>
+        
         <Label :text="today"/>
         <GridLayout :rows="(Object.keys(timings).length === 0) ? '0' : '*'">
             <Label class="list" textWrap="true">
@@ -44,17 +50,22 @@ module.exports = {
             this.isLoading = true;
             this.$store
             .dispatch("getPrayerTimes")
-            .then(() => {
+            .then((res) => {
+                this.chMethod = this.$store.getters.getMethod - 1;
                 this.isLoading = false;
               })
             .catch(err => {
-              this.isLoading = false
-              alert(err)
+                alert(err)
+                this.isLoading = false
             });
           },
           updatePrayerTime(){
             this.isLoading = true;
+            this.$store.commit('updateMethod',{
+                data: this.chMethod + 1
+            })
             this.$store.dispatch('updatePrayerTime').then((res) => {
+                this.chMethod = this.$store.getters.getMethod - 1;
                 this.isLoading = false;
                 alert(res)
             }).catch((err) => {

@@ -6,5 +6,8 @@ module.exports = {
     },
     updatePrayerTimes(state,payload){
         state.PrayerTimes = payload.data
+    },
+    updateMethod(state,payload){
+        state.prayerMethod = payload.data
     }
 }

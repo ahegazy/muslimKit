@@ -205,10 +205,11 @@ module.exports = {
                 let month = date.getMonth() + 1;
                 let year = date.getFullYear();
                 return new Promise((resolve, reject) => {
-                    dispatch('getCurrentLocation').then((res)=>{
+                    dispatch('getCurrentLocation').then((res)=>{ //check if methood changed
                         let location = res
+                        let method = this.getters.getMethod  
                         dispatch('getFile',{
-                            url: 'http://api.aladhan.com/v1/calendar?latitude='+location.latitude+'&longitude='+location.longitude+'&&method=5&month='+month+'&year='+year, 
+                            url: 'http://api.aladhan.com/v1/calendar?latitude='+location.latitude+'&longitude='+location.longitude+'&method='+method+'&month='+month+'&year='+year, 
                             fname: 'prayerTimes'
                         }).then((res) => {
                             dispatch('getTodayPrayers',{
@@ -230,16 +231,10 @@ module.exports = {
                 if(!this.state.data.hasOwnProperty('prayerTimes')){    
                     let path = fileSystem.path.join(Azkar.path, 'prayerTimes.json');
                     let exists = fileSystem.File.exists(path);
-                    if(!exists){
-                        return new Promise((resolve, reject) => {
-                            dispatch('updatePrayerTime').then((res) => {
-                                resolve(res)
-                            }).catch((err) => {
-                                reject(err)
-                            });    
-                        });
-                    }else{
-                        return new Promise((resolve, reject) => {
+                    return new Promise((resolve, reject) => {
+                        if(!exists){
+                            reject("Please choose your configuration and click update.")
+                        }else{
                             dispatch('readFile',{
                                 fname: 'prayerTimes'
                             }).then((res)=>{
@@ -250,12 +245,11 @@ module.exports = {
                                 }).catch((err)=>{
                                     reject(err)
                                 })
-                                resolve('Prayer Time Updated')
                             }).catch((err) => {
                                 reject(err)
                             })
-                        })
                     }
+                });
                 }
             },
             getTodayPrayers: function({commit,dispatch},payload){
@@ -278,6 +272,9 @@ module.exports = {
                             PrayingTimes = data[i];
                         }
                     }
+                    commit('updateMethod',{
+                        data: PrayingTimes.meta.method.id
+                    })
                     commit('updatePrayerTimes', {
                         data : PrayingTimes
                     })

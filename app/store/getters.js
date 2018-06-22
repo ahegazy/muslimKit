@@ -4,5 +4,8 @@ module.exports =  {
     },
     getPrayerTimes (state) {
       return state.PrayerTimes
+    },
+    getMethod(state){
+      return state.prayerMethod
     }
 }
