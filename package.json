@@ -1,8 +1,8 @@
 {
 	"description": "A mobile [Android/IOS] app that provides muslim with his azkar and prayer times during the day.",
-	"license": "SEE LICENSE IN <your-license-filename>",
-	"readme": "NativeScript Application",
-	"repository": "<fill-your-repository-here>",
+	"license": "",
+	"readme": "",
+	"repository": "",
 	"nativescript": {
 		"id": "org.hegazyapp.muslimkit",
 		"tns-android": {

@@ -83,6 +83,12 @@ module.exports = {
 
   },
   mounted() {
-    this.getList();
+    this.isLoading = true;
+    this.$store.dispatch('updateList').then(()=>{
+      this.isLoading = false;
+    }).catch(err => {
+      this.isLoading = false;
+      this.getList();
+    });
   }
 };
