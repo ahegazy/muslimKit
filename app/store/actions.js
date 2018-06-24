@@ -65,11 +65,7 @@ module.exports = {
                             var: 'list',
                             data : res
                         })
-                        dispatch('checklocalStorage').then((res)=>{
-                            resolve('list updated')
-                        }).catch((err) => {
-                            reject(err)
-                        });
+                        resolve('list updated')
                     }).catch((err) => {
                         reject(err)
                     })
