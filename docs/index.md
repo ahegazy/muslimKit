@@ -8,6 +8,9 @@ A mobile [Android/IOS] app that provides muslim with his azkar during the day an
 - Nativescript-vue
 
 ## Download
+### Version 0.2.2 
+- [Android](https://raw.githubusercontent.com/ahegazy/muslimKit/master/build/muslimkit-022.apk)
+- [iOS](#)
 ### Version 0.2.1 
 - [Android](#)
 - [iOS](#)
