@@ -291,6 +291,27 @@ module.exports = {
                         }
                     }
                 });
-            }//
+            },
+            checkforUpdate: function({commit,dispatch},payload){
+                let curentVer = Vue.prototype.$currentVersion.split('.');
+                return new Promise((resolve, reject) => {
+
+                    dispatch('getFile',{
+                        fname: 'version',
+                        url : 'https://ahegazy.github.io/muslimKit/json/version.json'                   
+                    }).then((res) => {
+                        newVer = res.CurrentVersion.split('.');
+                        newVer.map((item,i) => {
+                            if(item > curentVer[i]){
+                                console.log('new Version Available')
+                                resolve(res);
+                            }
+                        });
+                        resolve(false);
+                    }).catch((err) => {
+                        reject (err);
+                    });
+                });
+            }
         
 }

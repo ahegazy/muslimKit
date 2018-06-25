@@ -70,9 +70,7 @@ module.exports = {
         this.isLoading = false;
         alert(err)
       });
-
     }
-
   },
   computed:{
     data: function(){

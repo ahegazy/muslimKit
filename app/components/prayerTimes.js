@@ -1,3 +1,4 @@
+const actionBar = require('./actionBar');
 
 module.exports = {
     data() {
@@ -9,7 +10,7 @@ module.exports = {
     },
     template: `
     <Page class="page">
-        <ActionBar class="action-bar" title="Prayer Times"/>
+        <actionBar title="Prayer Times"/>
         <StackLayout class="stack">
         <GridLayout :rows="isLoading ? '*' : '0'">
             <ActivityIndicator busy="true" />
@@ -87,5 +88,7 @@ module.exports = {
             let data = this.$store.getters.getPrayerTimes;
             return (Object.keys(this.$store.getters.getPrayerTimes).length != 0) ? data.date.gregorian.weekday.en + ' ' + data.date.readable + ' | ' + data.date.hijri.weekday.ar +' '+ data.date.hijri.day + ' ' + data.date.hijri.month.ar + ' ' + data.date.hijri.year : '';
         }
-      },
+      },components: {
+        actionBar
+    }
 }

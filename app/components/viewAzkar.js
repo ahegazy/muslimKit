@@ -1,3 +1,5 @@
+const actionBar = require('./actionBar');
+
 module.exports = {
   data() {
     return {
@@ -8,7 +10,7 @@ module.exports = {
   },
   template: `
 <Page>
-  <ActionBar :title="Azkar.title"/>
+  <actionBar :title="Azkar.title"/>
   <StackLayout orientation="vertical" class="stack">
     <Button id="update" @tap="resetRep" text="reset" class="btn btn-outline"/>
     <GridLayout>
@@ -44,9 +46,7 @@ module.exports = {
         this.Azkar = this.$store.getters.getData[this.item.filename]
       })
     }
-  }, 
-  computed:{
-  },
-  mounted(){
+  },components: {
+    actionBar
   }
 };
