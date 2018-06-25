@@ -7,6 +7,11 @@ A mobile [Android/IOS] app that provides muslim with his azkar during the day an
 - Vuex
 - Nativescript-vue
 
+## Download
+### Version 0.2.1 
+- [Android](#)
+- [iOS](#)
+
 ## Usage
 
 1.  Install NativeScript tools (see http://docs.nativescript.org/start/quick-setup)
