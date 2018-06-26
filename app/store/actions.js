@@ -293,25 +293,43 @@ module.exports = {
                 });
             },
             checkforUpdate: function({commit,dispatch},payload){
-                let curentVer = Vue.prototype.$currentVersion.split('.');
                 return new Promise((resolve, reject) => {
-
                     dispatch('getFile',{
                         fname: 'version',
                         url : 'https://ahegazy.github.io/muslimKit/json/version.json'                   
                     }).then((res) => {
-                        newVer = res.CurrentVersion.split('.');
-                        newVer.map((item,i) => {
-                            if(item > curentVer[i]){
-                                console.log('new Version Available')
-                                resolve(res);
-                            }
+                        commit('updateNewestVer',{
+                            data: res
+                        })
+                        this.dispatch('checkIfnewest').then(res=>{
+                            resolve(res);
                         });
-                        resolve(false);
                     }).catch((err) => {
                         reject (err);
                     });
                 });
+            },
+            checkIfnewest({commit,dispatch},payload){
+                let curentVer = Vue.prototype.$currentVersion.split('.');
+                let newestVer = this.getters.getNewestVer;
+                return new Promise((resolve, reject) => {
+                    if(Object.keys(newestVer).length === 0){
+                        dispatch('checkforUpdate').then(res=>{
+                            resolve(res)
+                        }).catch(err=>{
+                            reject(err);
+                        });
+                    }else{
+                        newVer = newestVer.CurrentVersion.split('.');
+                        newVer.map((item,i) => {
+                            if(item > curentVer[i]){
+                                console.log('new Version Available')
+                                resolve(true);
+                            }
+                        });
+                        resolve(false);    
+                }
+            });
             }
         
 }

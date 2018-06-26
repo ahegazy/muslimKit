@@ -7,6 +7,7 @@ const store = require('./store')
 const geoLocation = require('nativescript-geolocation');
 const platformModule = require("tns-core-modules/platform");
 const utilityModule = require("utils/utils");
+const SocialShare = require("nativescript-social-share");
 
 Vue.prototype.$httpModule = httpModule;
 Vue.prototype.$fileSystem = fileSystem;
@@ -14,7 +15,8 @@ Vue.prototype.$store = store;
 Vue.prototype.$geoLocation = geoLocation;
 Vue.prototype.$platform = platformModule;
 Vue.prototype.$utility = utilityModule;
-Vue.prototype.$currentVersion = '0.2.2';
+Vue.prototype.$SocialShare = SocialShare;
+Vue.prototype.$currentVersion = '0.2.3';
 //Vue.config.silent = false;
 
 new Vue({

@@ -14,9 +14,9 @@ module.exports = {
   <StackLayout orientation="vertical" class="stack">
     <Button id="update" @tap="resetRep" text="reset" class="btn btn-outline"/>
     <GridLayout>
-      <ListView for="zekr in Azkar.content" @itemTap="countRep" row="1" colSpan="1">
+      <ListView for="zekr in Azkar.content" row="1" colSpan="1">
         <v-template>  
-          <Label class="list" textWrap="true">
+          <Label class="list" @Tap="countRep(zekr)" @longPress="shareZekr(zekr)" textWrap="true">
             <FormattedString>
               <span :text="zekr.zekr"/>
               <span text="\n تكرار: "/>
@@ -34,8 +34,8 @@ module.exports = {
 `,
   methods: {
     countRep: function(item){
-      if (item.item.repeat > 0){ 
-        this.Azkar.content[this.Azkar.content.indexOf(item.item)].repeat = item.item.repeat - 1;
+      if (item.repeat > 0){ 
+        this.Azkar.content[this.Azkar.content.indexOf(item)].repeat = item.repeat - 1;
       }
     },
     resetRep: function(){
@@ -45,6 +45,9 @@ module.exports = {
       }).then(()=>{
         this.Azkar = this.$store.getters.getData[this.item.filename]
       })
+    },
+    shareZekr: function(zekr){
+      this.$SocialShare.shareText(zekr.zekr);
     }
   },components: {
     actionBar

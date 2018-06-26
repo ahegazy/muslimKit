@@ -12,7 +12,8 @@ module.exports = new Vuex.Store({
     isLoading: false,
     data: {},
     PrayerTimes: {},
-    prayerMethod: 5
+    prayerMethod: 5,
+    newestVer: {}
     },
   mutations,
   actions,

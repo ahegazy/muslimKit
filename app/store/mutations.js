@@ -9,5 +9,8 @@ module.exports = {
     },
     updateMethod(state,payload){
         state.prayerMethod = payload.data
+    },
+    updateNewestVer(state,payload){
+        state.newestVer = payload.data
     }
 }

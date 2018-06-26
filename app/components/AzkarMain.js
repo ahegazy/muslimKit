@@ -1,6 +1,5 @@
 const viewAzkar = require('./viewAzkar');
 const Counter = require('./Counter');
-const Vue = require('nativescript-vue');
 const prayerTimes = require('./prayerTimes');
 
 module.exports = {
@@ -25,9 +24,9 @@ module.exports = {
         <Button class="btn btn-primary" @tap="navigate(item)" :text="item.title"/>
       </v-template>
     </ListView>
-    <Button id="update" @tap="updateList" text="Update" class="btn btn-outline"/>
+    <Button id="update" @tap="updateList" text="Update list" class="btn btn-outline"/>
   </StackLayout>
-`,
+`,//
   methods: {
     getList: function (){
       this.isLoading = true;
@@ -47,7 +46,6 @@ module.exports = {
         fname : item.filename,
         url : item.url
       }).then(()=>{
-        this.isLoading = false
         this.$navigateTo(viewAzkar,{
           context: {
               propsData: { 
@@ -56,6 +54,7 @@ module.exports = {
               }
           }
         });
+        this.isLoading = false
       }).catch((err) => {
         this.isLoading = false
         alert(err)
@@ -76,9 +75,6 @@ module.exports = {
     data: function(){
       return this.$store.getters.getData;
     }
-  },
-  components: {
-
   },
   mounted() {
     this.isLoading = true;

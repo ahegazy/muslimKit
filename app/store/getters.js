@@ -7,5 +7,8 @@ module.exports =  {
     },
     getMethod(state){
       return state.prayerMethod
+    },
+    getNewestVer(state){
+      return state.newestVer
     }
 }
