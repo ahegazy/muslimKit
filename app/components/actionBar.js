@@ -15,7 +15,8 @@ module.exports = {
   `,methods: {
     checkforUpdate: function(){
       this.$store.dispatch('checkforUpdate').then((res)=>{
-        this.AlertUpdate(res ? this.$store.getters.getNewestVer : res)
+        this.AlertUpdate(res ? this.$store.getters.getNewestVer : res);
+
       }).catch(err => {
           alert(err);
       })  

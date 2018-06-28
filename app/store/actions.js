@@ -304,6 +304,8 @@ module.exports = {
                         })
                         this.dispatch('checkIfnewest').then(res=>{
                             resolve(res);
+                        }).catch(err => {
+                            reject(err)
                         });
                     }).catch((err) => {
                         reject (err);
@@ -311,10 +313,11 @@ module.exports = {
                 });
             },
             checkIfnewest({commit,dispatch},payload){
+                let that = this;
                 return new Promise((resolve, reject) => {
                     appVersion.getVersionName().then(function(v) {
-                        let curentVer = v.split('.');
-                        let newestVer = this.getters.getNewestVer;
+                        let currentVer = v.split('.');
+                        let newestVer = that.getters.getNewestVer;
                         if(Object.keys(newestVer).length === 0){
                             dispatch('checkforUpdate').then(res=>{
                                 resolve(res)
@@ -323,12 +326,14 @@ module.exports = {
                             });
                         }else{
                             newVer = newestVer.CurrentVersion.split('.');
-                            if (newVer[0] > curentVer[0] || (newVer[0] === curentVer[0] && newVer[1] > curentVer[1]) || (newVer[0] === curentVer[0] && newVer[1] === curentVer[1] && newVer[2] > curentVer[2])){
+                            if (newVer[0] > currentVer[0] || (newVer[0] === currentVer[0] && newVer[1] > currentVer[1]) || (newVer[0] === currentVer[0] && newVer[1] === currentVer[1] && newVer[2] > currentVer[2])){
                                 console.log('new Version Available')
                                 resolve(true);
                             }
                             resolve(false);    
                         }
+                    }).catch(err => {
+                        reject(err);
                     });
                 });
             }
