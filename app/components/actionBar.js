@@ -7,7 +7,7 @@ module.exports = {
     <ActionBar :title="title">
       <ActionItem @tap="checkforUpdate(false)"
         ios.systemIcon="16" ios.position="right"
-        text="check For updates" android.position="popup" />
+        text="check for updates" android.position="popup" />
         <ActionItem @tap="shareApp"
         ios.systemIcon="9" ios.position="left"
         android.systemIcon="ic_menu_share" android.position="actionBar" />

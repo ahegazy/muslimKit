@@ -10,6 +10,7 @@
 		}
 	},
 	"dependencies": {
+		"nativescript-appversion": "^1.4.1",
 		"nativescript-geolocation": "^4.2.6",
 		"nativescript-social-share": "^1.5.0",
 		"nativescript-theme-core": "^1.0.4",

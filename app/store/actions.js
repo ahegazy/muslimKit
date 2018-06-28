@@ -1,7 +1,8 @@
-const Vue = require('nativescript-vue');
 const httpModule = require("http");
 const fileSystem = require("tns-core-modules/file-system");
 const geoLocation = require('nativescript-geolocation');
+const appVersion = require("nativescript-appversion");
+
 const Azkar = fileSystem.knownFolders.currentApp().getFolder('Azkar');
 const date = new Date();
 
@@ -310,26 +311,26 @@ module.exports = {
                 });
             },
             checkIfnewest({commit,dispatch},payload){
-                let curentVer = Vue.prototype.$currentVersion.split('.');
-                let newestVer = this.getters.getNewestVer;
                 return new Promise((resolve, reject) => {
-                    if(Object.keys(newestVer).length === 0){
-                        dispatch('checkforUpdate').then(res=>{
-                            resolve(res)
-                        }).catch(err=>{
-                            reject(err);
-                        });
-                    }else{
-                        newVer = newestVer.CurrentVersion.split('.');
-                        newVer.map((item,i) => {
-                            if(item > curentVer[i]){
+                    appVersion.getVersionName().then(function(v) {
+                        let curentVer = v.split('.');
+                        let newestVer = this.getters.getNewestVer;
+                        if(Object.keys(newestVer).length === 0){
+                            dispatch('checkforUpdate').then(res=>{
+                                resolve(res)
+                            }).catch(err=>{
+                                reject(err);
+                            });
+                        }else{
+                            newVer = newestVer.CurrentVersion.split('.');
+                            if (newVer[0] > curentVer[0] || (newVer[0] === curentVer[0] && newVer[1] > curentVer[1]) || (newVer[0] === curentVer[0] && newVer[1] === curentVer[1] && newVer[2] > curentVer[2])){
                                 console.log('new Version Available')
                                 resolve(true);
                             }
-                        });
-                        resolve(false);    
-                }
-            });
+                            resolve(false);    
+                        }
+                    });
+                });
             }
         
 }
